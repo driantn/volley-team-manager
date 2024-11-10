@@ -1,4 +1,7 @@
 import { useRef, useState } from "react";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import { useScreenshot } from "use-react-screenshot";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import { Layout } from "@/components/layout";
 import { Members } from "@/components/members";
@@ -9,12 +12,37 @@ import { TeamType } from "@/types";
 function App() {
   const [teams, setTeams] = useState<Array<TeamType>>([]);
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
+  const teamsRef = useRef<HTMLDivElement>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, takeScreenshot] = useScreenshot();
+
+  const showShareButton = !!window.navigator.share;
 
   const onClick = () => {
     const rawData = textAreaRef.current?.value;
     const teams = generateTeams(rawData);
-    console.log(teams);
     setTeams(teams);
+  };
+
+  const onScreenShotAndShare = async () => {
+    const imageData = await takeScreenshot(teamsRef.current);
+    const fileBlob = new Blob([imageData], { type: "image/png" });
+    const date = new Date();
+    await window.navigator
+      .share?.({
+        title: "Current teams",
+        files: [
+          new File(
+            [fileBlob],
+            `volley-${date.toLocaleDateString().replace(/\//g, "_")}.png`,
+            {
+              type: "image/png",
+              lastModified: date.getTime(),
+            },
+          ),
+        ],
+      })
+      .catch(console.log);
   };
 
   const handleDragEnd = (event: DragEndEvent) => {
@@ -57,8 +85,17 @@ function App() {
       </button>
 
       <DndContext onDragEnd={handleDragEnd}>
-        {teams.length ? <Teams teams={teams} /> : null}
+        {teams.length ? <Teams ref={teamsRef} teams={teams} /> : null}
       </DndContext>
+
+      {teams.length && showShareButton ? (
+        <button
+          className="p-2 bg-slate-400 rounded-md text-white"
+          onClick={onScreenShotAndShare}
+        >
+          Generate Image and Share
+        </button>
+      ) : null}
     </Layout>
   );
 }
