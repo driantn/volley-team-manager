@@ -27,7 +27,6 @@ function App() {
     const rawData = textAreaRef.current?.value;
     if (!rawData) return;
     const teams = generateTeams(rawData);
-    console.log(teams);
     setQueryTeams(btoa(encodeURIComponent(JSON.stringify(teams))));
     setTeams(teams);
   };
@@ -50,6 +49,7 @@ function App() {
     await window.navigator
       .share?.({
         title: "Current teams",
+        url: window.location.href,
         files: [
           new File(
             [fileBlob],
