@@ -1,7 +1,7 @@
 import { MemberType } from "@/types";
 import { useDraggable } from "@dnd-kit/core";
 
-type Props = MemberType;
+type Props = MemberType & { tId: string };
 
 export const Member = (props: Props) => {
   const { name, id, tId } = props;
