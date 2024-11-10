@@ -1,27 +1,31 @@
+import { MemberType } from "@/types";
+import { v4 as uuidv4 } from "uuid";
+
 const MAX_TEAM_MEMBERS = 4;
 
 export const generateTeams = (rawData?: string) => {
   if (!rawData) return [];
   const initNames = rawData
     .split("\n")
-    .map((name) => name.trim().split(" ")[1]);
+    .map((name) => name.trim().replace(" ", "").split(".")[1]);
+
   if (!initNames.length) return [];
   const maxTeams = Math.ceil(initNames.length / MAX_TEAM_MEMBERS);
   const names = [...initNames];
   const teams = Array(maxTeams)
     .fill(1)
     .map(() => {
-      const team: Array<string> = [];
+      const team: Array<MemberType> = [];
+      const teamId = uuidv4();
       Array(MAX_TEAM_MEMBERS)
         .fill(1)
         .forEach(() => {
           const randomIndex = Math.floor(Math.random() * names.length);
           const randomName = names[randomIndex];
-          team.push(randomName);
+          team.push({ id: uuidv4(), name: randomName, teamId });
           names.splice(randomIndex, 1);
-          // names = names.filter((name) => name !== randomName);
         });
-      return team;
+      return { id: teamId, content: team };
     });
 
   return teams;
