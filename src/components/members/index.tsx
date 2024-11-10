@@ -8,7 +8,7 @@ export const Members = forwardRef<HTMLTextAreaElement>((_, ref) => {
         ref={ref}
         id="members"
         name="members"
-        className="border border-slate-400 rounded-sm p-2"
+        className="border border-slate-400 rounded-md p-2 outline-none"
         rows={10}
       />
     </div>
