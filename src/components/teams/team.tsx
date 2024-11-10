@@ -20,7 +20,7 @@ export const Team = (props: Props) => {
     <div
       ref={setNodeRef}
       style={customStyle}
-      className="p-2 text-white empty:hidden"
+      className="p-2 text-white empty:hidden rounded-md"
     >
       {content
         .filter((member) => member.name)
