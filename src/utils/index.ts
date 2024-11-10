@@ -5,11 +5,15 @@ const MAX_TEAM_MEMBERS = 4;
 
 export const generateTeams = (rawData?: string) => {
   if (!rawData) return [];
-  const initNames = rawData
-    .split("\n")
-    .map((name) => name.trim().replace(" ", "").split(".")[1]);
+
+  const initNames = rawData.split("\n").map((name) => {
+    const chunks = name.trim().replace(" ", "").split(".");
+    if (chunks.length === 1) return chunks[0];
+    return chunks[1];
+  });
 
   if (!initNames.length) return [];
+
   const maxTeams = Math.ceil(initNames.length / MAX_TEAM_MEMBERS);
   const names = [...initNames];
   const teams = Array(maxTeams)
