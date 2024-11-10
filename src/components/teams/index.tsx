@@ -17,6 +17,9 @@ const flatColors = [
   "#2c2c54",
   "#ccae62",
   "#d1ccc0",
+  "#C2D8B9",
+  "#A1B5D8",
+  "#3D3B8E",
 ];
 
 export const Teams = forwardRef<HTMLDivElement, Props>((props, ref) => {
