@@ -25,7 +25,7 @@ export const Team = (props: Props) => {
       {content
         .filter((member) => member.name)
         .map((member) => {
-          return <Member {...member} key={member.id} />;
+          return <Member {...member} key={member.id} tId={id} />;
         })}
     </div>
   );

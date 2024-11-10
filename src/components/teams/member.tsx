@@ -4,10 +4,10 @@ import { useDraggable } from "@dnd-kit/core";
 type Props = MemberType;
 
 export const Member = (props: Props) => {
-  const { name, id, teamId } = props;
+  const { name, id, tId } = props;
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id,
-    data: { id, name, teamId },
+    data: { id, name, tId },
   });
 
   const style = transform

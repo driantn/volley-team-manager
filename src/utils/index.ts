@@ -20,16 +20,16 @@ export const generateTeams = (rawData?: string) => {
     .fill(1)
     .map(() => {
       const team: Array<MemberType> = [];
-      const teamId = uuidv4();
+      const tId = uuidv4().split("-")[4];
       Array(MAX_TEAM_MEMBERS)
         .fill(1)
         .forEach(() => {
           const randomIndex = Math.floor(Math.random() * names.length);
           const randomName = names[randomIndex];
-          team.push({ id: uuidv4(), name: randomName, teamId });
+          team.push({ id: uuidv4().split("-")[4], name: randomName });
           names.splice(randomIndex, 1);
         });
-      return { id: teamId, content: team };
+      return { id: tId, content: team };
     });
 
   return teams;

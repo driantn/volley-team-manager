@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { useScreenshot } from "use-react-screenshot";
@@ -8,9 +9,13 @@ import { Members } from "@/components/members";
 import { Teams } from "@/components/teams";
 import { generateTeams } from "@/utils";
 import { TeamType } from "@/types";
+import { useQueryState } from "nuqs";
 
 function App() {
-  const [teams, setTeams] = useState<Array<TeamType>>([]);
+  const [queryTeams, setQueryTeams] = useQueryState("teams");
+  const [teams, setTeams] = useState<Array<TeamType>>(
+    queryTeams ? JSON.parse(decodeURIComponent(atob(queryTeams))) : [],
+  );
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const teamsRef = useRef<HTMLDivElement>(null);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -20,7 +25,10 @@ function App() {
 
   const onClick = () => {
     const rawData = textAreaRef.current?.value;
+    if (!rawData) return;
     const teams = generateTeams(rawData);
+    console.log(teams);
+    setQueryTeams(btoa(encodeURIComponent(JSON.stringify(teams))));
     setTeams(teams);
   };
 
@@ -59,18 +67,18 @@ function App() {
   const handleDragEnd = (event: DragEndEvent) => {
     const { over, active } = event;
     const { id = "", content = [] } = over?.data?.current?.team || {};
-    if (!id || id === active.data.current?.teamId) return;
+    if (!id || id === active.data.current?.tId) return;
 
     // add member to new team
     const newContent = [...content];
-    newContent.push({ ...active.data?.current, teamId: id });
+    newContent.push({ ...active.data?.current, tId: id });
     const teamIndex = teams.findIndex((team) => team.id === id);
     const teamsCopy = [...teams];
     teamsCopy[teamIndex] = { id, content: newContent };
 
     // remove member from old team
     const oldTeamIndex = teams.findIndex(
-      (team) => team.id === active.data.current?.teamId,
+      (team) => team.id === active.data.current?.tId,
     );
     let oldContent = [...teams[oldTeamIndex].content];
 
@@ -79,7 +87,7 @@ function App() {
     );
 
     teamsCopy[oldTeamIndex] = {
-      id: active.data.current?.teamId,
+      id: active.data.current?.tId,
       content: oldContent,
     };
 

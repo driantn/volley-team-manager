@@ -1,7 +1,7 @@
 export type MemberType = {
   id: string;
   name: string;
-  teamId: string;
+  tId: string;
 };
 
 export type TeamType = {
