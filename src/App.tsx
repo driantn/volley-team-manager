@@ -14,7 +14,7 @@ function App() {
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const teamsRef = useRef<HTMLDivElement>(null);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [image, takeScreenshot] = useScreenshot();
+  const [_, takeScreenshot] = useScreenshot();
 
   const showShareButton = !!window.navigator.share;
 
