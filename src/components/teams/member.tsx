@@ -22,7 +22,7 @@ export const Member = (props: Props) => {
       style={style}
       {...listeners}
       {...attributes}
-      className="hover:bg-slate-400 p-2 touch-none focus:bg-slate-400"
+      className="hover:bg-slate-400 p-2 touch-none focus:bg-slate-400 rounded-md"
     >
       {name}
     </h3>
