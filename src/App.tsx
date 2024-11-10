@@ -91,6 +91,7 @@ function App() {
       content: oldContent,
     };
 
+    setQueryTeams(btoa(encodeURIComponent(JSON.stringify([...teamsCopy]))));
     setTeams([...teamsCopy]);
   };
 
