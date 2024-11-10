@@ -15,7 +15,7 @@ export const generateTeams = (rawData?: string) => {
   if (!initNames.length) return [];
 
   const maxTeams = Math.ceil(initNames.length / MAX_TEAM_MEMBERS);
-  const names = [...initNames].filter((name) => name);
+  const names = [...initNames].filter((name) => name && !name.includes("-"));
   const teams = Array(maxTeams)
     .fill(1)
     .map(() => {
