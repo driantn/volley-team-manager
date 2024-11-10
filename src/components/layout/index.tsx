@@ -5,7 +5,7 @@ type Props = PropsWithChildren;
 export const Layout = (props: Props) => {
   const { children } = props;
   return (
-    <div className="flex flex-col gap-4 items-center h-screen container m-auto p-4">
+    <div className="flex flex-col gap-4 items-center min-h-screen container m-auto p-8">
       {children}
     </div>
   );

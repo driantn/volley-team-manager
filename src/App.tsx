@@ -14,7 +14,7 @@ function App() {
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const teamsRef = useRef<HTMLDivElement>(null);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_, takeScreenshot] = useScreenshot();
+  const [image, takeScreenshot] = useScreenshot();
 
   const showShareButton = !!window.navigator.share;
 
@@ -24,9 +24,20 @@ function App() {
     setTeams(teams);
   };
 
+  const dataURItoBlob = (dataURI: string) => {
+    const byteString = atob(dataURI.split(",")[1]);
+    const mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
+    const ab = new ArrayBuffer(byteString.length);
+    const dw = new DataView(ab);
+    for (let i = 0; i < byteString.length; i++) {
+      dw.setUint8(i, byteString.charCodeAt(i));
+    }
+    return new Blob([ab], { type: mimeString });
+  };
+
   const onScreenShotAndShare = async () => {
     const imageData = await takeScreenshot(teamsRef.current);
-    const fileBlob = new Blob([imageData], { type: "image/png" });
+    const fileBlob = dataURItoBlob(imageData);
     const date = new Date();
     await window.navigator
       .share?.({
