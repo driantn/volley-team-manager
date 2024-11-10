@@ -4,22 +4,24 @@ import { Member } from "./member";
 
 type Props = {
   team: TeamType;
+  style: Record<string, string>;
 };
 
 export const Team = (props: Props) => {
-  const { team } = props;
+  const { team, style: customStyle } = props;
   const { id, content } = team;
 
-  const { isOver, setNodeRef } = useDroppable({
+  const { setNodeRef } = useDroppable({
     id,
     data: { team },
   });
-  const style = {
-    backgroundColor: isOver ? "green" : undefined,
-  };
 
   return (
-    <div ref={setNodeRef} style={style} className="p-2">
+    <div
+      ref={setNodeRef}
+      style={customStyle}
+      className="p-2 text-white empty:hidden"
+    >
       {content
         .filter((member) => member.name)
         .map((member) => {

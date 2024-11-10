@@ -48,6 +48,7 @@ function App() {
   const handleDragEnd = (event: DragEndEvent) => {
     const { over, active } = event;
     const { id = "", content = [] } = over?.data?.current?.team || {};
+    if (!id || id === active.data.current?.teamId) return;
 
     // add member to new team
     const newContent = [...content];
